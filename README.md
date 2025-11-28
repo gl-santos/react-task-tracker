@@ -2,6 +2,9 @@
 
 Built as React crash course.
 
+Click the link to see it running!
+https://react-task-tracker-chi.vercel.app
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
