@@ -1,37 +1,53 @@
 import { useState, useEffect } from 'react';
 
 function App() {
-  const [tasks, setTasks] = useState(() => {
-    const saved = localStorage.getItem('tasks');
-    const sample = [{ id: Date.now(), text: 'Sample task — toggle or delete me!', done: false }];
-    return saved ? JSON.parse(saved) : sample;
-  });
+  const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
+  const BACKEND_URL = import.meta.env.BACKEND_URL || 'http://localhost:3001/tasks/';
 
   useEffect(() => {
-    const saved = localStorage.getItem('tasks');
-    if (saved) setTasks(JSON.parse(saved));
+    fetchTasks();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+  const fetchTasks = async () => {
+    try {
+      const res = await fetch(BACKEND_URL);
+      const data = await res.json();
+      setTasks(data);
+    } catch (err) {
+      console.error('Backend down?', err);
+    }
+  };
 
-  const addTask = () => {
-    if (input.trim()) {
-      setTasks([...tasks, { id: Date.now(), text: input, done: false }]);
+  const addTask = async () => {
+    const text = input.trim();
+    if (text) {
+      try {
+        await fetch(BACKEND_URL, { method: 'POST', body: JSON.stringify({text}), headers: {'Content-Type': 'application/json'} });
+        await fetchTasks();
+      } catch(err) {
+        console.error('Add failed.', err);
+      }
       setInput('');
     }
   };
 
-  const toggleTask = (id) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, done: !task.done } : task
-    ));
+  const toggleTask = async (id) => {
+    try {
+      await fetch(BACKEND_URL + id, { method: 'PUT', headers: {'Content-Type': 'application/json'} });
+      await fetchTasks();
+    } catch(err) {
+      console.error('Toggle failed.', err);
+    }
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id));
+  const deleteTask = async (id) => {
+    try {
+      await fetch(BACKEND_URL + id, { method: 'DELETE', headers: {'Content-Type': 'application/json'} });
+      await fetchTasks();
+    } catch(err) {
+      console.error('Delete failed.', err);
+    }
   };
 
   return (
