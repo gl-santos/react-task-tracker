@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 function App() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
-  const BACKEND_URL = import.meta.env.BACKEND_URL || 'http://localhost:3001/tasks/';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001/tasks';
 
   useEffect(() => {
     fetchTasks();
