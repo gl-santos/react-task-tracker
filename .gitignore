@@ -26,3 +26,5 @@ dist-ssr
 # Environment key values
 *.env
 
+# Local files
+tasks.json
