@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskdb');
 const taskSchema = new mongoose.Schema({
   text: { type: String, required: true },
   done: { type: Boolean, default: false }
-});
+}, { versionKey: false });
 const Task = mongoose.model('Task', taskSchema);
 
 app.get('/', async (req, res) => {
