@@ -74,7 +74,7 @@ function App() {
 
         <ul className="space-y-3">
           {tasks.map(task => (
-            <li key={task.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+            <li key={task._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
               <div className="flex-1">
                 <span className={`block ${task.done ? 'line-through text-gray-500' : 'text-gray-800'}`}>
                   {task.done && '☑️ '} {task.text}
@@ -82,7 +82,7 @@ function App() {
               </div>
               <div className="flex space-x-2">
                 <button 
-                  onClick={() => toggleTask(task.id)}
+                  onClick={() => toggleTask(task._id)}
                   className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                     task.done 
                       ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' 
@@ -92,7 +92,7 @@ function App() {
                   {task.done ? 'Undo' : 'Done'}
                 </button>
                 <button 
-                  onClick={() => deleteTask(task.id)}
+                  onClick={() => deleteTask(task._id)}
                   className="bg-red-100 text-red-800 hover:bg-red-200 px-3 py-1 rounded text-sm font-medium transition-colors"
                 >
                   Delete
